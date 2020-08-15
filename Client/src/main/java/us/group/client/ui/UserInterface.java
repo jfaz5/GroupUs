@@ -1,5 +1,7 @@
 package us.group.client.ui;
 
-public class UserInterface {
+import us.group.client.types.UserInterfaceType;
 
+public abstract class UserInterface {
+    abstract public UserInterfaceType getUIType();
 }
