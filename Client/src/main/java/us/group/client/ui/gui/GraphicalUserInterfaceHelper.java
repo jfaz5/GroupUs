@@ -8,9 +8,12 @@ import javafx.stage.Screen;
 import java.io.InputStream;
 import javafx.scene.text.Font;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Circle;
 import javafx.scene.control.Label;
+import javafx.scene.shape.Ellipse;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
@@ -29,7 +32,7 @@ public class GraphicalUserInterfaceHelper extends Application {
      *
      * @param icon The image to be displayed on the button.
      * @param tooltipMessage The tooltip message to be displayed on mouse hover.
-     * @return Button The created button.
+     * @return The created button.
      */
 
     private Button createLeftSidebarButton(Image icon, String tooltipMessage) {
@@ -58,13 +61,47 @@ public class GraphicalUserInterfaceHelper extends Application {
     /**
      * Returns the display window height.
      *
-     * @return int Window height.
+     * @return Window height.
      */
 
     private int getWindowHeight() {
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         return (int)Math.ceil(bounds.getHeight());
+    }
+
+    /**
+     * Creates direct message placeholders to display for when the user does not
+     * have any open conversations.
+     *
+     * @param numPlaceholders The number of placeholders to create.
+     * @return Direct message placeholders.
+     */
+
+    private VBox createDirectMessagePlaceholders(int numPlaceholders) {
+        VBox dmPlaceholders = new VBox(10);
+        int currentGrayscale = 255 - numPlaceholders * 5;
+        ObservableList dmPlaceholdersList = dmPlaceholders.getChildren();
+
+        for (int i = 0; i < numPlaceholders; i++) {
+            Circle c = new Circle(25);
+            Ellipse e = new Ellipse(70, 25);
+
+            Color color = Color.rgb(currentGrayscale, currentGrayscale, currentGrayscale);
+            c.setFill(color);
+            e.setFill(color);
+            currentGrayscale += 5;
+
+            HBox horizontalBox = new HBox(5);
+            ObservableList horizontalBoxList = horizontalBox.getChildren();
+            horizontalBoxList.add(c);
+            horizontalBoxList.add(new HBox(5));
+            horizontalBoxList.add(e);
+
+            dmPlaceholdersList.add(horizontalBox);
+        }
+
+        return dmPlaceholders;
     }
 
     @Override
@@ -145,6 +182,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         createDMButton.setTooltip(new Tooltip("Create DM"));
         createDMButton.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
 
+        // Create direct messages horizontal box
         HBox directMessagesBox = new HBox(10);
         ObservableList directMessagesBoxList = directMessagesBox.getChildren();
         directMessagesBoxList.add(directMessagesLabel);
@@ -163,6 +201,8 @@ public class GraphicalUserInterfaceHelper extends Application {
         secondVerticalBoxList.add(friendsButton);
         secondVerticalBoxList.add(new VBox(10));
         secondVerticalBoxList.add(directMessagesBox);
+        secondVerticalBoxList.add(new VBox(10));
+        secondVerticalBoxList.add(new VBox(10));
 
         // Horizontal boxes for left side of screen
         HBox firstHorizontalBox = new HBox(10);
