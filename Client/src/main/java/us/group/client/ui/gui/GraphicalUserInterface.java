@@ -19,4 +19,5 @@ public class GraphicalUserInterface extends UserInterface {
         this.guiHelper.start(primaryStage);
     }
 
+    //public void launch()
 }
