@@ -1,20 +1,23 @@
 package us.group.client.ui.gui;
 
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.Group;
+import javafx.geometry.Pos;
 import javafx.stage.Screen;
 import java.io.InputStream;
+import javafx.scene.text.Font;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.Image;
+import javafx.scene.control.Button;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.Orientation;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.FontWeight;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 
