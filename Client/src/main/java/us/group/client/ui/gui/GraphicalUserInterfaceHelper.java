@@ -10,12 +10,13 @@ import javafx.scene.text.Font;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.Image;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.Orientation;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.FontWeight;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.application.Application;
@@ -70,9 +71,7 @@ public class GraphicalUserInterfaceHelper extends Application {
     public void start(Stage primaryStage) {
         // Vertical boxes for left side of screen
         VBox firstVerticalBox = new VBox(10);
-        VBox secondVerticalBox = new VBox(10); // Filler
-        VBox thirdVerticalBox = new VBox(10);
-        VBox fourthVerticalBox = new VBox(10); // Filler
+        VBox secondVerticalBox = new VBox(10);
 
         // Line separators
         Separator firstSeparator = new Separator(Orientation.HORIZONTAL);
@@ -80,7 +79,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         Separator thirdSeparator = new Separator(Orientation.VERTICAL);
         Separator fourthSeparator = new Separator(Orientation.HORIZONTAL);
 
-        // Set line heights
+        // Set vertical line heights
         int windowHeight = getWindowHeight();
         secondSeparator.setStyle("-fx-height: " + windowHeight + "px; -fx-min-height: " + windowHeight + "px;");
         thirdSeparator.setStyle("-fx-height: " + windowHeight + "px; -fx-min-height: " + windowHeight + "px;");
@@ -105,7 +104,7 @@ public class GraphicalUserInterfaceHelper extends Application {
 
         // Add components to left sidebar
         ObservableList firstVerticalBoxList = firstVerticalBox.getChildren();
-        firstVerticalBoxList.add(secondVerticalBox);
+        firstVerticalBoxList.add(new VBox(10));
         firstVerticalBoxList.add(homeButton);
         firstVerticalBoxList.add(firstSeparator);
         firstVerticalBoxList.add(addServerButton);
@@ -128,15 +127,42 @@ public class GraphicalUserInterfaceHelper extends Application {
         friendsButton.setMinWidth(200);
         friendsButton.setMinHeight(35);
         friendsButton.setAlignment(Pos.BASELINE_LEFT);
-        friendsButton.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 15.0));
+        friendsButton.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
         friendsButton.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
 
+        // Create direct messages label
+        Label directMessagesLabel = new Label("Direct Messages");
+        directMessagesLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 15.0));
+
+        // Create "Create DM" button
+        ImageView plusIconView = new ImageView(plusIconImage);
+        plusIconView.setFitWidth(10);
+        plusIconView.setFitHeight(10);
+        Button createDMButton = new Button();
+        createDMButton.setGraphic(plusIconView);
+        createDMButton.setMaxWidth(10);
+        createDMButton.setMaxHeight(10);
+        createDMButton.setTooltip(new Tooltip("Create DM"));
+        createDMButton.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
+
+        HBox directMessagesBox = new HBox(10);
+        ObservableList directMessagesBoxList = directMessagesBox.getChildren();
+        directMessagesBoxList.add(directMessagesLabel);
+        directMessagesBoxList.add(new HBox(10));
+        directMessagesBoxList.add(new HBox(10));
+        directMessagesBoxList.add(new HBox(10));
+        directMessagesBoxList.add(new HBox(10));
+        directMessagesBoxList.add(new HBox(10));
+        directMessagesBoxList.add(createDMButton);
+
         // Add components to second left sidebar
-        ObservableList thirdVerticalBoxList = thirdVerticalBox.getChildren();
-        thirdVerticalBoxList.add(fourthVerticalBox);
-        thirdVerticalBoxList.add(conversationTextField);
-        thirdVerticalBoxList.add(fourthSeparator);
-        thirdVerticalBoxList.add(friendsButton);
+        ObservableList secondVerticalBoxList = secondVerticalBox.getChildren();
+        secondVerticalBoxList.add(new VBox(10));
+        secondVerticalBoxList.add(conversationTextField);
+        secondVerticalBoxList.add(fourthSeparator);
+        secondVerticalBoxList.add(friendsButton);
+        secondVerticalBoxList.add(new VBox(10));
+        secondVerticalBoxList.add(directMessagesBox);
 
         // Horizontal boxes for left side of screen
         HBox firstHorizontalBox = new HBox(10);
@@ -147,7 +173,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         firstHorizontalBoxList.add(secondHorizontalBox);
         firstHorizontalBoxList.add(firstVerticalBox);
         firstHorizontalBoxList.add(secondSeparator);
-        firstHorizontalBoxList.add(thirdVerticalBox);
+        firstHorizontalBoxList.add(secondVerticalBox);
         firstHorizontalBoxList.add(thirdSeparator);
 
         // Add horizontal layout to group
