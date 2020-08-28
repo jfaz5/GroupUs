@@ -1,3 +1,7 @@
+// TODO:
+// - Readjust calculateNumPlaceholders()
+// - Remove call to createDirectMessagePlaceholders()
+
 package us.group.client.ui.gui;
 
 import javafx.scene.Scene;
@@ -23,6 +27,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.application.Application;
+import javafx.scene.layout.BorderPane;
 import javafx.collections.ObservableList;
 
 public class GraphicalUserInterfaceHelper extends Application {
@@ -104,6 +109,20 @@ public class GraphicalUserInterfaceHelper extends Application {
         return dmPlaceholders;
     }
 
+    /**
+     * Calculates the number of direct message placeholders to display for when
+     * the user does not have any open conversations.
+     *
+     * @return Number of direct message placeholders.
+     */
+
+    private int calculateNumPlaceholders() {
+        int shapeHeight = 25;
+        int windowHeight = getWindowHeight();
+        int numPlaceholders = (int)Math.round((0.2 * windowHeight) / shapeHeight);
+        return numPlaceholders;
+    }
+
     @Override
     public void start(Stage primaryStage) {
         // Vertical boxes for left side of screen
@@ -115,11 +134,19 @@ public class GraphicalUserInterfaceHelper extends Application {
         Separator secondSeparator = new Separator(Orientation.VERTICAL);
         Separator thirdSeparator = new Separator(Orientation.VERTICAL);
         Separator fourthSeparator = new Separator(Orientation.HORIZONTAL);
+        Separator fifthSeparator = new Separator(Orientation.VERTICAL);
+        Separator sixthSeparator = new Separator(Orientation.VERTICAL);
+        Separator seventhSeparator = new Separator(Orientation.HORIZONTAL);
 
         // Set vertical line heights
-        int windowHeight = getWindowHeight();
-        secondSeparator.setStyle("-fx-height: " + windowHeight + "px; -fx-min-height: " + windowHeight + "px;");
-        thirdSeparator.setStyle("-fx-height: " + windowHeight + "px; -fx-min-height: " + windowHeight + "px;");
+        int lineHeight = getWindowHeight() - 100;
+        secondSeparator.setStyle("-fx-height: " + lineHeight + "px; -fx-min-height: " + lineHeight + "px;");
+        thirdSeparator.setStyle("-fx-height: " + lineHeight + "px; -fx-min-height: " + lineHeight + "px;");
+        fifthSeparator.setStyle("-fx-height: 100px; -fx-min-height: 100px;");
+        sixthSeparator.setStyle("-fx-height: 100px; -fx-min-height: 100px;");
+
+        // Set horizontal line width
+        seventhSeparator.setStyle("-fx-width: 200px; -fx-min-width: 200px;");
 
         // Object for loading resources
         ClassLoader classLoader = getClass().getClassLoader();
@@ -203,6 +230,26 @@ public class GraphicalUserInterfaceHelper extends Application {
         secondVerticalBoxList.add(directMessagesBox);
         secondVerticalBoxList.add(new VBox(10));
         secondVerticalBoxList.add(new VBox(10));
+        secondVerticalBoxList.add(createDirectMessagePlaceholders(calculateNumPlaceholders()));
+
+        // Create before settings horizontal box
+        HBox beforeSettingsBox = new HBox(10);
+        ObservableList beforeSettingsBoxList = beforeSettingsBox.getChildren();
+        beforeSettingsBoxList.add(secondSeparator);
+        beforeSettingsBoxList.add(secondVerticalBox);
+        beforeSettingsBoxList.add(thirdSeparator);
+
+        // Create settings horizontal box
+        HBox settingsBox = new HBox(10);
+        ObservableList settingsBoxList = settingsBox.getChildren();
+        settingsBoxList.add(fifthSeparator);
+        settingsBoxList.add(seventhSeparator);
+        settingsBoxList.add(sixthSeparator);
+
+        // Create border pane for second left sidebar
+        BorderPane leftBorderPane = new BorderPane();
+        leftBorderPane.setCenter(beforeSettingsBox);
+        leftBorderPane.setBottom(settingsBox);
 
         // Horizontal boxes for left side of screen
         HBox firstHorizontalBox = new HBox(10);
@@ -212,9 +259,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         ObservableList firstHorizontalBoxList = firstHorizontalBox.getChildren();
         firstHorizontalBoxList.add(secondHorizontalBox);
         firstHorizontalBoxList.add(firstVerticalBox);
-        firstHorizontalBoxList.add(secondSeparator);
-        firstHorizontalBoxList.add(secondVerticalBox);
-        firstHorizontalBoxList.add(thirdSeparator);
+        firstHorizontalBoxList.add(leftBorderPane);
 
         // Add horizontal layout to group
         Group root = new Group();

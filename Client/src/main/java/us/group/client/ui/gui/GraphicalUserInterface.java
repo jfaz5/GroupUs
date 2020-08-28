@@ -11,6 +11,7 @@ public class GraphicalUserInterface extends UserInterface {
         this.guiHelper = new GraphicalUserInterfaceHelper();
     }
 
+    @Override
     public UserInterfaceType getUIType() {
         return UserInterfaceType.GUI;
     }
