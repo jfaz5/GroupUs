@@ -1,7 +1,3 @@
-// TODO:
-// - Readjust calculateNumPlaceholders()
-// - Remove call to createDirectMessagePlaceholders()
-
 package us.group.client.ui.gui;
 
 import javafx.scene.Scene;
@@ -119,7 +115,7 @@ public class GraphicalUserInterfaceHelper extends Application {
     private int calculateNumPlaceholders() {
         int shapeHeight = 25;
         int windowHeight = getWindowHeight();
-        int numPlaceholders = (int)Math.round((0.2 * windowHeight) / shapeHeight);
+        int numPlaceholders = (int)Math.round((0.18 * windowHeight) / shapeHeight);
         return numPlaceholders;
     }
 
@@ -230,7 +226,6 @@ public class GraphicalUserInterfaceHelper extends Application {
         secondVerticalBoxList.add(directMessagesBox);
         secondVerticalBoxList.add(new VBox(10));
         secondVerticalBoxList.add(new VBox(10));
-        secondVerticalBoxList.add(createDirectMessagePlaceholders(calculateNumPlaceholders()));
 
         // Create before settings horizontal box
         HBox beforeSettingsBox = new HBox(10);
