@@ -264,7 +264,16 @@ public class GraphicalUserInterfaceHelper extends Application {
         Background defaultUserAccountPictureIconBackground = new Background(defaultUserAccountPictureIconBackgroundImage);
         userAccountPictureButton.setBackground(defaultUserAccountPictureIconBackground);
 
-        // Create username textfield
+        // Create username label
+        Label usernameLabel = new Label("TestUsername");
+        usernameLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 13.0));
+        usernameLabel.setMinWidth(100);
+
+        // Create username label vertical box
+        VBox usernameLabelVerticalBox = new VBox(10);
+        ObservableList usernameLabelVerticalBoxList = usernameLabelVerticalBox.getChildren();
+        usernameLabelVerticalBoxList.add(createGlue());
+        usernameLabelVerticalBoxList.add(usernameLabel);
 
         // Create settings button
         InputStream settingsIconStream = classLoader.getResourceAsStream("img/settings_icon.png");
@@ -291,6 +300,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         HBox secondSettingsHorizontalBox = new HBox(10);
         ObservableList secondSettingsHorizontalBoxList = secondSettingsHorizontalBox.getChildren();
         secondSettingsHorizontalBoxList.add(userAccountPictureButton);
+        secondSettingsHorizontalBoxList.add(usernameLabelVerticalBox);
         secondSettingsHorizontalBoxList.add(settingsButton);
 
         // Create settings vertical box
