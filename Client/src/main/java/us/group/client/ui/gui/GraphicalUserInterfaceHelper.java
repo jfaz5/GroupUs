@@ -1,5 +1,6 @@
 package us.group.client.ui.gui;
 
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Group;
@@ -24,7 +25,12 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.application.Application;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Background;
 import javafx.collections.ObservableList;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundPosition;
 
 public class GraphicalUserInterfaceHelper extends Application {
 
@@ -119,6 +125,17 @@ public class GraphicalUserInterfaceHelper extends Application {
         return numPlaceholders;
     }
 
+    /**
+     * Creates a node to be used as either vertical or horizontal display glue.
+     *
+     * @return Node to be used as either vertical or horizontal display glue.
+     */
+
+    private Node createGlue() {
+        VBox glueNode = new VBox(10);
+        return glueNode;
+    }
+
     @Override
     public void start(Stage primaryStage) {
         // Vertical boxes for left side of screen
@@ -135,11 +152,11 @@ public class GraphicalUserInterfaceHelper extends Application {
         Separator seventhSeparator = new Separator(Orientation.HORIZONTAL);
 
         // Set vertical line heights
-        int lineHeight = getWindowHeight() - 100;
+        int lineHeight = getWindowHeight() - 90;
         secondSeparator.setStyle("-fx-height: " + lineHeight + "px; -fx-min-height: " + lineHeight + "px;");
         thirdSeparator.setStyle("-fx-height: " + lineHeight + "px; -fx-min-height: " + lineHeight + "px;");
-        fifthSeparator.setStyle("-fx-height: 100px; -fx-min-height: 100px;");
-        sixthSeparator.setStyle("-fx-height: 100px; -fx-min-height: 100px;");
+        fifthSeparator.setStyle("-fx-height: 90px; -fx-min-height: 90px;");
+        sixthSeparator.setStyle("-fx-height: 90px; -fx-min-height: 90px;");
 
         // Set horizontal line width
         seventhSeparator.setStyle("-fx-width: 200px; -fx-min-width: 200px;");
@@ -164,7 +181,7 @@ public class GraphicalUserInterfaceHelper extends Application {
 
         // Add components to left sidebar
         ObservableList firstVerticalBoxList = firstVerticalBox.getChildren();
-        firstVerticalBoxList.add(new VBox(10));
+        firstVerticalBoxList.add(createGlue());
         firstVerticalBoxList.add(homeButton);
         firstVerticalBoxList.add(firstSeparator);
         firstVerticalBoxList.add(addServerButton);
@@ -209,23 +226,23 @@ public class GraphicalUserInterfaceHelper extends Application {
         HBox directMessagesBox = new HBox(10);
         ObservableList directMessagesBoxList = directMessagesBox.getChildren();
         directMessagesBoxList.add(directMessagesLabel);
-        directMessagesBoxList.add(new HBox(10));
-        directMessagesBoxList.add(new HBox(10));
-        directMessagesBoxList.add(new HBox(10));
-        directMessagesBoxList.add(new HBox(10));
-        directMessagesBoxList.add(new HBox(10));
+        directMessagesBoxList.add(createGlue());
+        directMessagesBoxList.add(createGlue());
+        directMessagesBoxList.add(createGlue());
+        directMessagesBoxList.add(createGlue());
+        directMessagesBoxList.add(createGlue());
         directMessagesBoxList.add(createDMButton);
 
         // Add components to second left sidebar
         ObservableList secondVerticalBoxList = secondVerticalBox.getChildren();
-        secondVerticalBoxList.add(new VBox(10));
+        secondVerticalBoxList.add(createGlue());
         secondVerticalBoxList.add(conversationTextField);
         secondVerticalBoxList.add(fourthSeparator);
         secondVerticalBoxList.add(friendsButton);
-        secondVerticalBoxList.add(new VBox(10));
+        secondVerticalBoxList.add(createGlue());
         secondVerticalBoxList.add(directMessagesBox);
-        secondVerticalBoxList.add(new VBox(10));
-        secondVerticalBoxList.add(new VBox(10));
+        secondVerticalBoxList.add(createGlue());
+        secondVerticalBoxList.add(createGlue());
 
         // Create before settings horizontal box
         HBox beforeSettingsBox = new HBox(10);
@@ -234,17 +251,65 @@ public class GraphicalUserInterfaceHelper extends Application {
         beforeSettingsBoxList.add(secondVerticalBox);
         beforeSettingsBoxList.add(thirdSeparator);
 
+        // Create user account picture button
+        Button userAccountPictureButton = new Button();
+        userAccountPictureButton.setMaxHeight(40);
+        userAccountPictureButton.setMaxWidth(40);
+        userAccountPictureButton.setMinHeight(40);
+        userAccountPictureButton.setMinWidth(40);
+        userAccountPictureButton.setClip(new Circle(20, 20, 20));
+        InputStream defaultUserAccountPictureIconStream = classLoader.getResourceAsStream("img/default_user_account_picture_icon.png");
+        Image defaultUserAccountPictureIconImage = new Image(defaultUserAccountPictureIconStream);
+        BackgroundImage defaultUserAccountPictureIconBackgroundImage = new BackgroundImage(defaultUserAccountPictureIconImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(userAccountPictureButton.getWidth(), userAccountPictureButton.getHeight(), true, true, true, false));
+        Background defaultUserAccountPictureIconBackground = new Background(defaultUserAccountPictureIconBackgroundImage);
+        userAccountPictureButton.setBackground(defaultUserAccountPictureIconBackground);
+
+        // Create username textfield
+
+        // Create settings button
+        InputStream settingsIconStream = classLoader.getResourceAsStream("img/settings_icon.png");
+        Image settingsIconImage = new Image(settingsIconStream);
+        ImageView settingsIconView = new ImageView(settingsIconImage);
+        settingsIconView.setFitWidth(19);
+        settingsIconView.setFitHeight(19);
+        Button settingsButton = new Button();
+        settingsButton.setGraphic(settingsIconView);
+        settingsButton.setMinHeight(39);
+        settingsButton.setMinWidth(39);
+        settingsButton.setStyle(
+                "-fx-background-radius: 5em; " +
+                        "-fx-min-width: 39px; " +
+                        "-fx-min-height: 39px; " +
+                        "-fx-max-width: 39px; " +
+                        "-fx-border-color: black; " +
+                        "-fx-border-radius: 5em; " +
+                        "-fx-border-width: 2px; " +
+                        "-fx-max-height: 39px;"
+        );
+
+        // Create second settings horizontal box
+        HBox secondSettingsHorizontalBox = new HBox(10);
+        ObservableList secondSettingsHorizontalBoxList = secondSettingsHorizontalBox.getChildren();
+        secondSettingsHorizontalBoxList.add(userAccountPictureButton);
+        secondSettingsHorizontalBoxList.add(settingsButton);
+
+        // Create settings vertical box
+        VBox settingsVerticalBox = new VBox(10);
+        ObservableList settingsVerticalBoxList = settingsVerticalBox.getChildren();
+        settingsVerticalBoxList.add(seventhSeparator);
+        settingsVerticalBoxList.add(secondSettingsHorizontalBox);
+
         // Create settings horizontal box
-        HBox settingsBox = new HBox(10);
-        ObservableList settingsBoxList = settingsBox.getChildren();
-        settingsBoxList.add(fifthSeparator);
-        settingsBoxList.add(seventhSeparator);
-        settingsBoxList.add(sixthSeparator);
+        HBox settingsHorizontalBox = new HBox(10);
+        ObservableList settingsHorizontalBoxList = settingsHorizontalBox.getChildren();
+        settingsHorizontalBoxList.add(fifthSeparator);
+        settingsHorizontalBoxList.add(settingsVerticalBox);
+        settingsHorizontalBoxList.add(sixthSeparator);
 
         // Create border pane for second left sidebar
         BorderPane leftBorderPane = new BorderPane();
         leftBorderPane.setCenter(beforeSettingsBox);
-        leftBorderPane.setBottom(settingsBox);
+        leftBorderPane.setBottom(settingsHorizontalBox);
 
         // Horizontal boxes for left side of screen
         HBox firstHorizontalBox = new HBox(10);
