@@ -35,7 +35,7 @@ import javafx.scene.layout.BackgroundPosition;
 public class GraphicalUserInterfaceHelper extends Application {
 
     /**
-     * Creates a button to be displayed on the left sidebar.
+     * Creates a button to be displayed in the left sidebar.
      *
      * @param icon The image to be displayed on the button.
      * @param tooltipMessage The tooltip message to be displayed on mouse hover.
@@ -68,7 +68,7 @@ public class GraphicalUserInterfaceHelper extends Application {
     /**
      * Returns the display window height.
      *
-     * @return Window height.
+     * @return The display window height.
      */
 
     private int getWindowHeight() {
@@ -82,7 +82,7 @@ public class GraphicalUserInterfaceHelper extends Application {
      * have any open conversations.
      *
      * @param numPlaceholders The number of placeholders to create.
-     * @return Direct message placeholders.
+     * @return The created direct message placeholders.
      */
 
     private VBox createDirectMessagePlaceholders(int numPlaceholders) {
@@ -115,7 +115,7 @@ public class GraphicalUserInterfaceHelper extends Application {
      * Calculates the number of direct message placeholders to display for when
      * the user does not have any open conversations.
      *
-     * @return Number of direct message placeholders.
+     * @return The number of direct message placeholders to display.
      */
 
     private int calculateNumPlaceholders() {
@@ -128,12 +128,26 @@ public class GraphicalUserInterfaceHelper extends Application {
     /**
      * Creates a node to be used as either vertical or horizontal display glue.
      *
-     * @return Node to be used as either vertical or horizontal display glue.
+     * @return The created node.
      */
 
     private Node createGlue() {
         VBox glueNode = new VBox(10);
         return glueNode;
+    }
+
+    /**
+     * Creates a button to be displayed in the friends header.
+     *
+     * @param text The button text.
+     * @return The created button.
+     */
+
+    private Button createFriendsHeaderButton(String text) {
+        Button button = new Button(text);
+        button.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 12.0));
+        button.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
+        return button;
     }
 
     @Override
@@ -150,6 +164,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         Separator fifthSeparator = new Separator(Orientation.VERTICAL);
         Separator sixthSeparator = new Separator(Orientation.VERTICAL);
         Separator seventhSeparator = new Separator(Orientation.HORIZONTAL);
+        Separator eighthSeparator = new Separator(Orientation.HORIZONTAL);
 
         // Set vertical line heights
         int lineHeight = getWindowHeight() - 90;
@@ -325,22 +340,56 @@ public class GraphicalUserInterfaceHelper extends Application {
         HBox firstHorizontalBox = new HBox(10);
         HBox secondHorizontalBox = new HBox(10);
 
+        // Create online friends button
+        Button onlineFriendsButton = createFriendsHeaderButton("Online");
+
+        // Create all friends button
+        Button allFriendsButton = createFriendsHeaderButton("All");
+
+        // Create pending friends button
+        Button pendingFriendsButton = createFriendsHeaderButton("Pending");
+
+        // Create blocked user accounts button
+        Button blockedUserAccountsButton = createFriendsHeaderButton("Blocked");
+
+        // Create add friend button
+        Button addFriendButton = new Button("Add Friend");
+        addFriendButton.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 12.0));
+        addFriendButton.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-background-color: lightgreen;");
+
+        // Create friends horizontal box
+        HBox friendsHorizontalBox = new HBox(10);
+        ObservableList friendsHorizontalBoxList = friendsHorizontalBox.getChildren();
+        friendsHorizontalBoxList.add(onlineFriendsButton);
+        friendsHorizontalBoxList.add(allFriendsButton);
+        friendsHorizontalBoxList.add(pendingFriendsButton);
+        friendsHorizontalBoxList.add(blockedUserAccountsButton);
+        friendsHorizontalBoxList.add(addFriendButton);
+
+        // Create friends vertical box
+        VBox friendsVerticalBox = new VBox(10);
+        ObservableList friendsVerticalBoxList = friendsVerticalBox.getChildren();
+        friendsVerticalBoxList.add(createGlue());
+        friendsVerticalBoxList.add(friendsHorizontalBox);
+        friendsVerticalBoxList.add(eighthSeparator);
+
         // Add components to horizontal layout
         ObservableList firstHorizontalBoxList = firstHorizontalBox.getChildren();
         firstHorizontalBoxList.add(secondHorizontalBox);
         firstHorizontalBoxList.add(firstVerticalBox);
         firstHorizontalBoxList.add(leftBorderPane);
+        firstHorizontalBoxList.add(friendsVerticalBox);
 
-        // Add horizontal layout to group
-        Group root = new Group();
-        ObservableList rootList = root.getChildren();
-        rootList.add(firstHorizontalBox);
+        // Create home root group
+        Group homeRoot = new Group();
+        ObservableList homeRootList = homeRoot.getChildren();
+        homeRootList.add(firstHorizontalBox);
 
-        // Add group to scene
-        Scene scene = new Scene(root);
+        // Create scenes
+        Scene homeScene = new Scene(homeRoot);
 
-        // Add scene to stage and display window
-        primaryStage.setScene(scene);
+        // Add home scene to stage and display window
+        primaryStage.setScene(homeScene);
         primaryStage.setTitle("GroupUs");
         primaryStage.setMaximized(true);
         primaryStage.show();
