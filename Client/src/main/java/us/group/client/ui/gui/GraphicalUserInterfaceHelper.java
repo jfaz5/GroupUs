@@ -78,6 +78,18 @@ public class GraphicalUserInterfaceHelper extends Application {
     }
 
     /**
+     * Returns the display window width.
+     *
+     * @return The display window width.
+     */
+
+    private int getWindowWidth() {
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+        return (int)Math.ceil(bounds.getWidth());
+    }
+
+    /**
      * Creates direct message placeholders to display for when the user does not
      * have any open conversations.
      *
@@ -165,6 +177,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         Separator sixthSeparator = new Separator(Orientation.VERTICAL);
         Separator seventhSeparator = new Separator(Orientation.HORIZONTAL);
         Separator eighthSeparator = new Separator(Orientation.HORIZONTAL);
+        Separator ninthSeparator = new Separator(Orientation.VERTICAL);
 
         // Set vertical line heights
         int lineHeight = getWindowHeight() - 90;
@@ -173,8 +186,10 @@ public class GraphicalUserInterfaceHelper extends Application {
         fifthSeparator.setStyle("-fx-height: 90px; -fx-min-height: 90px;");
         sixthSeparator.setStyle("-fx-height: 90px; -fx-min-height: 90px;");
 
-        // Set horizontal line width
+        // Set horizontal line widths
+        int lineWidth = getWindowWidth() - 322 - 15;
         seventhSeparator.setStyle("-fx-width: 200px; -fx-min-width: 200px;");
+        eighthSeparator.setStyle("-fx-width: " + lineWidth + "px; -fx-min-width: " + lineWidth + "px;");
 
         // Object for loading resources
         ClassLoader classLoader = getClass().getClassLoader();
@@ -340,6 +355,17 @@ public class GraphicalUserInterfaceHelper extends Application {
         HBox firstHorizontalBox = new HBox(10);
         HBox secondHorizontalBox = new HBox(10);
 
+        // Create friends logo
+        ImageView secondWaveIconView = new ImageView(waveIconImage);
+        secondWaveIconView.setFitWidth(20);
+        secondWaveIconView.setFitHeight(20);
+        Button friendsLogo = new Button();
+        friendsLogo.setGraphic(secondWaveIconView);
+        friendsLogo.setText("Friends");
+        friendsLogo.setAlignment(Pos.BASELINE_LEFT);
+        friendsLogo.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, Font.getDefault().getSize() + 1));
+        friendsLogo.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+
         // Create online friends button
         Button onlineFriendsButton = createFriendsHeaderButton("Online");
 
@@ -360,10 +386,17 @@ public class GraphicalUserInterfaceHelper extends Application {
         // Create friends horizontal box
         HBox friendsHorizontalBox = new HBox(10);
         ObservableList friendsHorizontalBoxList = friendsHorizontalBox.getChildren();
+        friendsHorizontalBoxList.add(friendsLogo);
+        friendsHorizontalBoxList.add(ninthSeparator);
+        friendsHorizontalBoxList.add(createGlue());
         friendsHorizontalBoxList.add(onlineFriendsButton);
+        friendsHorizontalBoxList.add(createGlue());
         friendsHorizontalBoxList.add(allFriendsButton);
+        friendsHorizontalBoxList.add(createGlue());
         friendsHorizontalBoxList.add(pendingFriendsButton);
+        friendsHorizontalBoxList.add(createGlue());
         friendsHorizontalBoxList.add(blockedUserAccountsButton);
+        friendsHorizontalBoxList.add(createGlue());
         friendsHorizontalBoxList.add(addFriendButton);
 
         // Create friends vertical box
