@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.Image;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.shape.Circle;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Ellipse;
@@ -164,10 +166,6 @@ public class GraphicalUserInterfaceHelper extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Vertical boxes for left side of screen
-        VBox firstVerticalBox = new VBox(10);
-        VBox secondVerticalBox = new VBox(10);
-
         // Line separators
         Separator firstSeparator = new Separator(Orientation.HORIZONTAL);
         Separator secondSeparator = new Separator(Orientation.VERTICAL);
@@ -211,7 +209,8 @@ public class GraphicalUserInterfaceHelper extends Application {
         Image magnifyingGlassIconImage = new Image(magnifyingGlassIconStream);
         Button exploreButton = createLeftSidebarButton(magnifyingGlassIconImage, "Explore Public Servers");
 
-        // Add components to left sidebar
+        // Create first vertical box
+        VBox firstVerticalBox = new VBox(10);
         ObservableList firstVerticalBoxList = firstVerticalBox.getChildren();
         firstVerticalBoxList.add(createGlue());
         firstVerticalBoxList.add(homeButton);
@@ -255,33 +254,34 @@ public class GraphicalUserInterfaceHelper extends Application {
         createDMButton.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
 
         // Create direct messages horizontal box
-        HBox directMessagesBox = new HBox(10);
-        ObservableList directMessagesBoxList = directMessagesBox.getChildren();
-        directMessagesBoxList.add(directMessagesLabel);
-        directMessagesBoxList.add(createGlue());
-        directMessagesBoxList.add(createGlue());
-        directMessagesBoxList.add(createGlue());
-        directMessagesBoxList.add(createGlue());
-        directMessagesBoxList.add(createGlue());
-        directMessagesBoxList.add(createDMButton);
+        HBox directMessagesHorizontalBox = new HBox(10);
+        ObservableList directMessagesHorizontalBoxList = directMessagesHorizontalBox.getChildren();
+        directMessagesHorizontalBoxList.add(directMessagesLabel);
+        directMessagesHorizontalBoxList.add(createGlue());
+        directMessagesHorizontalBoxList.add(createGlue());
+        directMessagesHorizontalBoxList.add(createGlue());
+        directMessagesHorizontalBoxList.add(createGlue());
+        directMessagesHorizontalBoxList.add(createGlue());
+        directMessagesHorizontalBoxList.add(createDMButton);
 
-        // Add components to second left sidebar
+        // Create second vertical box
+        VBox secondVerticalBox = new VBox(10);
         ObservableList secondVerticalBoxList = secondVerticalBox.getChildren();
         secondVerticalBoxList.add(createGlue());
         secondVerticalBoxList.add(conversationTextField);
         secondVerticalBoxList.add(fourthSeparator);
         secondVerticalBoxList.add(friendsButton);
         secondVerticalBoxList.add(createGlue());
-        secondVerticalBoxList.add(directMessagesBox);
+        secondVerticalBoxList.add(directMessagesHorizontalBox);
         secondVerticalBoxList.add(createGlue());
         secondVerticalBoxList.add(createGlue());
 
         // Create before settings horizontal box
-        HBox beforeSettingsBox = new HBox(10);
-        ObservableList beforeSettingsBoxList = beforeSettingsBox.getChildren();
-        beforeSettingsBoxList.add(secondSeparator);
-        beforeSettingsBoxList.add(secondVerticalBox);
-        beforeSettingsBoxList.add(thirdSeparator);
+        HBox beforeSettingsHorizontalBox = new HBox(10);
+        ObservableList beforeSettingsHorizontalBoxList = beforeSettingsHorizontalBox.getChildren();
+        beforeSettingsHorizontalBoxList.add(secondSeparator);
+        beforeSettingsHorizontalBoxList.add(secondVerticalBox);
+        beforeSettingsHorizontalBoxList.add(thirdSeparator);
 
         // Create user account picture button
         Button userAccountPictureButton = new Button();
@@ -350,12 +350,8 @@ public class GraphicalUserInterfaceHelper extends Application {
 
         // Create border pane for second left sidebar
         BorderPane leftBorderPane = new BorderPane();
-        leftBorderPane.setCenter(beforeSettingsBox);
+        leftBorderPane.setCenter(beforeSettingsHorizontalBox);
         leftBorderPane.setBottom(settingsHorizontalBox);
-
-        // Horizontal boxes for left side of screen
-        HBox firstHorizontalBox = new HBox(10);
-        HBox secondHorizontalBox = new HBox(10);
 
         // Create friends logo
         ImageView secondWaveIconView = new ImageView(waveIconImage);
@@ -380,10 +376,10 @@ public class GraphicalUserInterfaceHelper extends Application {
         // Create blocked user accounts button
         Button blockedUserAccountsButton = createFriendsHeaderButton("Blocked");
 
-        // Create add friend button
-        Button addFriendButton = new Button("Add Friend");
-        addFriendButton.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 12.0));
-        addFriendButton.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-background-color: lightgreen;");
+        // Create first add friend button
+        Button firstAddFriendButton = new Button("Add Friend");
+        firstAddFriendButton.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 12.0));
+        firstAddFriendButton.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-background-color: lightgreen;");
 
         // Create friends horizontal box
         HBox friendsHorizontalBox = new HBox(10);
@@ -399,7 +395,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         friendsHorizontalBoxList.add(createGlue());
         friendsHorizontalBoxList.add(blockedUserAccountsButton);
         friendsHorizontalBoxList.add(createGlue());
-        friendsHorizontalBoxList.add(addFriendButton);
+        friendsHorizontalBoxList.add(firstAddFriendButton);
 
         // Create friends vertical box
         VBox friendsVerticalBox = new VBox(10);
@@ -451,74 +447,192 @@ public class GraphicalUserInterfaceHelper extends Application {
         addFriendHorizontalBoxList.add(createGlue());
         addFriendHorizontalBoxList.add(addFriendVerticalBox);
 
-        // Create below friends vertical box
-        VBox belowFriendsVerticalBox = new VBox(10);
-        ObservableList belowFriendsVerticalBoxList = belowFriendsVerticalBox.getChildren();
-        belowFriendsVerticalBoxList.add(addFriendHorizontalBox);
-
-        // Create lonely icon image view
+        // Create first lonely icon image view
         InputStream lonelyIconStream = classLoader.getResourceAsStream("img/lonely_icon.png");
         Image lonelyIconImage = new Image(lonelyIconStream);
-        ImageView lonelyIconView = new ImageView(lonelyIconImage);
-        lonelyIconView.setFitWidth(225);
-        lonelyIconView.setFitHeight(225);
+        ImageView firstLonelyIconView = new ImageView(lonelyIconImage);
+        firstLonelyIconView.setFitWidth(225);
+        firstLonelyIconView.setFitHeight(225);
 
-        // Create lonely message label
-        Label lonelyMessageLabel = new Label();
-        lonelyMessageLabel.setText("Steve is waiting on friends. You don't have to though!");
-        lonelyMessageLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+        // Create first lonely message label
+        Label firstLonelyMessageLabel = new Label();
+        firstLonelyMessageLabel.setText("Steve is waiting on friends. You don't have to though!");
+        firstLonelyMessageLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
 
-        // Create lonely icon horizontal box
-        HBox lonelyIconHorizontalBox = new HBox(10);
-        ObservableList lonelyIconHorizontalBoxList = lonelyIconHorizontalBox.getChildren();
+        // Create first lonely icon horizontal box
+        HBox firstLonelyIconHorizontalBox = new HBox(10);
+        ObservableList firstLonelyIconHorizontalBoxList = firstLonelyIconHorizontalBox.getChildren();
 
         for (int i = 0; i < 40; i++)
-            lonelyIconHorizontalBoxList.add(createGlue());
+            firstLonelyIconHorizontalBoxList.add(createGlue());
 
-        lonelyIconHorizontalBoxList.add(lonelyIconView);
+        firstLonelyIconHorizontalBoxList.add(firstLonelyIconView);
 
-        // Create lonely message horizontal box
-        HBox lonelyMessageHorizontalBox = new HBox(10);
-        ObservableList lonelyMessageHorizontalBoxList = lonelyMessageHorizontalBox.getChildren();
+        // Create first lonely message horizontal box
+        HBox firstLonelyMessageHorizontalBox = new HBox(10);
+        ObservableList firstLonelyMessageHorizontalBoxList = firstLonelyMessageHorizontalBox.getChildren();
 
         for (int i = 0; i < 35; i++)
-            lonelyMessageHorizontalBoxList.add(createGlue());
+            firstLonelyMessageHorizontalBoxList.add(createGlue());
 
-        lonelyMessageHorizontalBoxList.add(lonelyMessageLabel);
+        firstLonelyMessageHorizontalBoxList.add(firstLonelyMessageLabel);
 
-        // Create friends and below friends vertical box
-        VBox friendsAndBelowFriendsVerticalBox = new VBox(10);
-        ObservableList friendsAndBelowFriendsVerticalBoxList = friendsAndBelowFriendsVerticalBox.getChildren();
-        friendsAndBelowFriendsVerticalBoxList.add(friendsVerticalBox);
-        friendsAndBelowFriendsVerticalBoxList.add(belowFriendsVerticalBox);
-        friendsAndBelowFriendsVerticalBoxList.add(createGlue());
-        friendsAndBelowFriendsVerticalBoxList.add(tenthSeparator);
+        // Create add friend tab vertical box
+        VBox addFriendTabVerticalBox = new VBox(10);
+        ObservableList addFriendTabVerticalBoxList = addFriendTabVerticalBox.getChildren();
+        addFriendTabVerticalBoxList.add(addFriendHorizontalBox);
+        addFriendTabVerticalBoxList.add(createGlue());
+        addFriendTabVerticalBoxList.add(tenthSeparator);
 
         for (int i = 0; i < 13; i++)
-            friendsAndBelowFriendsVerticalBoxList.add(createGlue());
+            addFriendTabVerticalBoxList.add(createGlue());
 
-        friendsAndBelowFriendsVerticalBoxList.add(lonelyIconHorizontalBox);
-        friendsAndBelowFriendsVerticalBoxList.add(createGlue());
-        friendsAndBelowFriendsVerticalBoxList.add(createGlue());
-        friendsAndBelowFriendsVerticalBoxList.add(lonelyMessageHorizontalBox);
+        addFriendTabVerticalBoxList.add(firstLonelyIconHorizontalBox);
+        addFriendTabVerticalBoxList.add(createGlue());
+        addFriendTabVerticalBoxList.add(createGlue());
+        addFriendTabVerticalBoxList.add(firstLonelyMessageHorizontalBox);
 
-        // Add components to horizontal layout
+        // Create second lonely icon view
+        ImageView secondLonelyIconView = new ImageView(lonelyIconImage);
+        secondLonelyIconView.setFitWidth(225);
+        secondLonelyIconView.setFitHeight(225);
+
+        // Create second lonely message label
+        Label secondLonelyMessageLabel = new Label();
+        secondLonelyMessageLabel.setText("Steve is waiting on friends. You don't have to though!");
+        secondLonelyMessageLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+
+        // Create second add friend button
+        Button secondAddFriendButton = new Button();
+        secondAddFriendButton.setText("Add Friend");
+        secondAddFriendButton.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+        secondAddFriendButton.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-background-color: lightblue;");
+
+        // Create second lonely icon horizontal box
+        HBox secondLonelyIconHorizontalBox = new HBox(10);
+        ObservableList secondLonelyIconHorizontalBoxList = secondLonelyIconHorizontalBox.getChildren();
+
+        for (int i = 0; i < 40; i++)
+            secondLonelyIconHorizontalBoxList.add(createGlue());
+
+        secondLonelyIconHorizontalBoxList.add(secondLonelyIconView);
+
+        // Create second lonely message horizontal box
+        HBox secondLonelyMessageHorizontalBox = new HBox(10);
+        ObservableList secondLonelyMessageHorizontalBoxList = secondLonelyMessageHorizontalBox.getChildren();
+
+        for (int i = 0; i < 35; i++)
+            secondLonelyMessageHorizontalBoxList.add(createGlue());
+
+        secondLonelyMessageHorizontalBoxList.add(secondLonelyMessageLabel);
+
+        // Create second add friend button horizontal box
+        HBox secondAddFriendButtonHorizontalBox = new HBox(10);
+        ObservableList secondAddFriendButtonHorizontalBoxList = secondAddFriendButtonHorizontalBox.getChildren();
+
+        for (int i = 0; i < 47; i++)
+            secondAddFriendButtonHorizontalBoxList.add(createGlue());
+
+        secondAddFriendButtonHorizontalBoxList.add(secondAddFriendButton);
+
+        // Create all friends tab vertical box
+        VBox allFriendsTabVerticalBox = new VBox(10);
+        ObservableList allFriendsTabVerticalBoxList = allFriendsTabVerticalBox.getChildren();
+
+        for (int i = 0; i < 18; i++)
+            allFriendsTabVerticalBoxList.add(createGlue());
+
+        allFriendsTabVerticalBoxList.add(secondLonelyIconHorizontalBox);
+        allFriendsTabVerticalBoxList.add(createGlue());
+        allFriendsTabVerticalBoxList.add(createGlue());
+        allFriendsTabVerticalBoxList.add(secondLonelyMessageHorizontalBox);
+        allFriendsTabVerticalBoxList.add(createGlue());
+        allFriendsTabVerticalBoxList.add(secondAddFriendButtonHorizontalBox);
+
+        // Create second friends vertical box
+        VBox secondFriendsVerticalBox = new VBox(10);
+        ObservableList secondFriendsVerticalBoxList = secondFriendsVerticalBox.getChildren();
+        secondFriendsVerticalBoxList.add(friendsVerticalBox);
+        secondFriendsVerticalBoxList.add(addFriendTabVerticalBox);
+
+        // Create first horizontal box
+        HBox firstHorizontalBox = new HBox(10);
         ObservableList firstHorizontalBoxList = firstHorizontalBox.getChildren();
-        firstHorizontalBoxList.add(secondHorizontalBox);
+        firstHorizontalBoxList.add(createGlue());
         firstHorizontalBoxList.add(firstVerticalBox);
         firstHorizontalBoxList.add(leftBorderPane);
-        firstHorizontalBoxList.add(friendsAndBelowFriendsVerticalBox);
+        firstHorizontalBoxList.add(secondFriendsVerticalBox);
 
-        // Create home root group
-        Group homeRoot = new Group();
-        ObservableList homeRootList = homeRoot.getChildren();
-        homeRootList.add(firstHorizontalBox);
+        // Define callback method for online friends button onclick event
+        onlineFriendsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (secondFriendsVerticalBoxList.size() > 1)
+                    secondFriendsVerticalBoxList.remove(1);
+            }
+        });
 
-        // Create scenes
-        Scene homeScene = new Scene(homeRoot);
+        // Define callback method for all friends button onclick event
+        allFriendsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (secondFriendsVerticalBoxList.size() > 1)
+                    secondFriendsVerticalBoxList.remove(1);
 
-        // Add home scene to stage and display window
-        primaryStage.setScene(homeScene);
+                secondFriendsVerticalBoxList.add(allFriendsTabVerticalBox);
+            }
+        });
+
+        // Define callback method for pending friends button onclick event
+        pendingFriendsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (secondFriendsVerticalBoxList.size() > 1)
+                    secondFriendsVerticalBoxList.remove(1);
+            }
+        });
+
+        // Define callback method for blocked user accounts button onclick event
+        blockedUserAccountsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (secondFriendsVerticalBoxList.size() > 1)
+                    secondFriendsVerticalBoxList.remove(1);
+            }
+        });
+
+        // Define callback method for first add friend button onclick event
+        firstAddFriendButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (secondFriendsVerticalBoxList.size() > 1)
+                    secondFriendsVerticalBoxList.remove(1);
+
+                secondFriendsVerticalBoxList.add(addFriendTabVerticalBox);
+            }
+        });
+
+        // Define callback method for second add friend button onclick event
+        secondAddFriendButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (secondFriendsVerticalBoxList.size() > 1)
+                    secondFriendsVerticalBoxList.remove(1);
+
+                secondFriendsVerticalBoxList.add(addFriendTabVerticalBox);
+            }
+        });
+
+        // Create group
+        Group rootGroup = new Group();
+        ObservableList rootGroupList = rootGroup.getChildren();
+        rootGroupList.add(firstHorizontalBox);
+
+        // Create scene
+        Scene rootScene = new Scene(rootGroup);
+
+        // Add scene to stage and display window
+        primaryStage.setScene(rootScene);
         primaryStage.setTitle("GroupUs");
         primaryStage.setMaximized(true);
         primaryStage.show();
