@@ -178,6 +178,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         Separator seventhSeparator = new Separator(Orientation.HORIZONTAL);
         Separator eighthSeparator = new Separator(Orientation.HORIZONTAL);
         Separator ninthSeparator = new Separator(Orientation.VERTICAL);
+        Separator tenthSeparator = new Separator(Orientation.HORIZONTAL);
 
         // Set vertical line heights
         int lineHeight = getWindowHeight() - 90;
@@ -190,6 +191,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         int lineWidth = getWindowWidth() - 322 - 15;
         seventhSeparator.setStyle("-fx-width: 200px; -fx-min-width: 200px;");
         eighthSeparator.setStyle("-fx-width: " + lineWidth + "px; -fx-min-width: " + lineWidth + "px;");
+        tenthSeparator.setStyle("-fx-width: " + lineWidth + "px; -fx-min-width: " + lineWidth + "px;");
 
         // Object for loading resources
         ClassLoader classLoader = getClass().getClassLoader();
@@ -406,12 +408,106 @@ public class GraphicalUserInterfaceHelper extends Application {
         friendsVerticalBoxList.add(friendsHorizontalBox);
         friendsVerticalBoxList.add(eighthSeparator);
 
+        // Create add friend label
+        Label addFriendLabel = new Label("Add Friend");
+        addFriendLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 20.0));
+
+        // Create add friend message label
+        Label addFriendMessageLabel = new Label("You can add a friend with their GroupUs tag. It's cAsE sEnSitIvE!");
+        addFriendMessageLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 15.0));
+
+        // Create enter tag text field
+        TextField enterTagTextField = new TextField();
+        enterTagTextField.setPromptText("Enter a GroupUs Tag");
+        enterTagTextField.setMinHeight(40);
+        enterTagTextField.setMinWidth(580);
+        enterTagTextField.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 20.0));
+
+        // Create send friend request button
+        Button sendFriendRequestButton = new Button();
+        sendFriendRequestButton.setText("Send Friend Request");
+        sendFriendRequestButton.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+        sendFriendRequestButton.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-background-color: lightblue;");
+        sendFriendRequestButton.setMinHeight(40);
+
+        // Create enter tag horizontal box
+        HBox enterTagHorizontalBox = new HBox(10);
+        ObservableList enterTagHorizontalBoxList = enterTagHorizontalBox.getChildren();
+        enterTagHorizontalBoxList.add(enterTagTextField);
+        enterTagHorizontalBoxList.add(sendFriendRequestButton);
+
+        // Create add friend vertical box
+        VBox addFriendVerticalBox = new VBox(10);
+        ObservableList addFriendVerticalBoxList = addFriendVerticalBox.getChildren();
+        addFriendVerticalBoxList.add(addFriendLabel);
+        addFriendVerticalBoxList.add(addFriendMessageLabel);
+        addFriendVerticalBoxList.add(createGlue());
+        addFriendVerticalBoxList.add(enterTagHorizontalBox);
+
+        // Create add friend horizontal box
+        HBox addFriendHorizontalBox = new HBox(10);
+        ObservableList addFriendHorizontalBoxList = addFriendHorizontalBox.getChildren();
+        addFriendHorizontalBoxList.add(createGlue());
+        addFriendHorizontalBoxList.add(createGlue());
+        addFriendHorizontalBoxList.add(addFriendVerticalBox);
+
+        // Create below friends vertical box
+        VBox belowFriendsVerticalBox = new VBox(10);
+        ObservableList belowFriendsVerticalBoxList = belowFriendsVerticalBox.getChildren();
+        belowFriendsVerticalBoxList.add(addFriendHorizontalBox);
+
+        // Create lonely icon image view
+        InputStream lonelyIconStream = classLoader.getResourceAsStream("img/lonely_icon.png");
+        Image lonelyIconImage = new Image(lonelyIconStream);
+        ImageView lonelyIconView = new ImageView(lonelyIconImage);
+        lonelyIconView.setFitWidth(225);
+        lonelyIconView.setFitHeight(225);
+
+        // Create lonely message label
+        Label lonelyMessageLabel = new Label();
+        lonelyMessageLabel.setText("Steve is waiting on friends. You don't have to though!");
+        lonelyMessageLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+
+        // Create lonely icon horizontal box
+        HBox lonelyIconHorizontalBox = new HBox(10);
+        ObservableList lonelyIconHorizontalBoxList = lonelyIconHorizontalBox.getChildren();
+
+        for (int i = 0; i < 40; i++)
+            lonelyIconHorizontalBoxList.add(createGlue());
+
+        lonelyIconHorizontalBoxList.add(lonelyIconView);
+
+        // Create lonely message horizontal box
+        HBox lonelyMessageHorizontalBox = new HBox(10);
+        ObservableList lonelyMessageHorizontalBoxList = lonelyMessageHorizontalBox.getChildren();
+
+        for (int i = 0; i < 35; i++)
+            lonelyMessageHorizontalBoxList.add(createGlue());
+
+        lonelyMessageHorizontalBoxList.add(lonelyMessageLabel);
+
+        // Create friends and below friends vertical box
+        VBox friendsAndBelowFriendsVerticalBox = new VBox(10);
+        ObservableList friendsAndBelowFriendsVerticalBoxList = friendsAndBelowFriendsVerticalBox.getChildren();
+        friendsAndBelowFriendsVerticalBoxList.add(friendsVerticalBox);
+        friendsAndBelowFriendsVerticalBoxList.add(belowFriendsVerticalBox);
+        friendsAndBelowFriendsVerticalBoxList.add(createGlue());
+        friendsAndBelowFriendsVerticalBoxList.add(tenthSeparator);
+
+        for (int i = 0; i < 13; i++)
+            friendsAndBelowFriendsVerticalBoxList.add(createGlue());
+
+        friendsAndBelowFriendsVerticalBoxList.add(lonelyIconHorizontalBox);
+        friendsAndBelowFriendsVerticalBoxList.add(createGlue());
+        friendsAndBelowFriendsVerticalBoxList.add(createGlue());
+        friendsAndBelowFriendsVerticalBoxList.add(lonelyMessageHorizontalBox);
+
         // Add components to horizontal layout
         ObservableList firstHorizontalBoxList = firstHorizontalBox.getChildren();
         firstHorizontalBoxList.add(secondHorizontalBox);
         firstHorizontalBoxList.add(firstVerticalBox);
         firstHorizontalBoxList.add(leftBorderPane);
-        firstHorizontalBoxList.add(friendsVerticalBox);
+        firstHorizontalBoxList.add(friendsAndBelowFriendsVerticalBox);
 
         // Create home root group
         Group homeRoot = new Group();
