@@ -37,7 +37,9 @@ import javafx.scene.layout.BackgroundPosition;
 public class GraphicalUserInterfaceHelper extends Application {
     private VBox addFriendTabVerticalBox = new VBox(10);
     private VBox allFriendsTabVerticalBox = new VBox(10);
+    private VBox blockedTagsTabVerticalBox = new VBox(10);
     private VBox onlineFriendsTabVerticalBox = new VBox(10);
+    private VBox pendingFriendsTabVerticalBox = new VBox(10);
 
     /**
      * Creates a button to be displayed in the left sidebar.
@@ -294,6 +296,110 @@ public class GraphicalUserInterfaceHelper extends Application {
         allFriendsTabVerticalBoxList.add(secondAddFriendButtonHorizontalBox);
 
         return this.allFriendsTabVerticalBox;
+    }
+
+    /***
+     * Creates a blocked tags tab vertical box.
+     *
+     * @param classLoader A ClassLoader instance.
+     * @return The created vertical box.
+     */
+
+    private VBox createBlockedTagsTab(ClassLoader classLoader) {
+        // Create building icon view
+        InputStream buildingIconStream = classLoader.getResourceAsStream("img/building_icon.png");
+        Image buildingIconImage = new Image(buildingIconStream);
+        ImageView buildingIconView = new ImageView(buildingIconImage);
+        buildingIconView.setFitWidth(300);
+        buildingIconView.setFitHeight(300);
+
+        // Create building message label
+        Label buildingMessageLabel = new Label("You can't unblock the Steve.");
+        buildingMessageLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+
+        // Create building icon view horizontal box
+        HBox buildingIconViewHorizontalBox = new HBox(10);
+        ObservableList buildingIconViewHorizontalBoxList = buildingIconViewHorizontalBox.getChildren();
+
+        for (int i = 0; i < 37; i++)
+            buildingIconViewHorizontalBoxList.add(createGlue());
+
+        buildingIconViewHorizontalBoxList.add(buildingIconView);
+
+        // Create building message label horizontal box
+        HBox buildingMessageLabelHorizontalBox = new HBox(10);
+        ObservableList buildingMessageLabelHorizontalBoxList = buildingMessageLabelHorizontalBox.getChildren();
+
+        for (int i = 0; i < 43; i++)
+            buildingMessageLabelHorizontalBoxList.add(createGlue());
+
+        buildingMessageLabelHorizontalBoxList.add(buildingMessageLabel);
+
+        // Create blocked tags tab vertical box
+        ObservableList blockedTagsTabVerticalBoxList = this.blockedTagsTabVerticalBox.getChildren();
+
+        for (int i = 0; i < 16; i++)
+            blockedTagsTabVerticalBoxList.add(createGlue());
+
+        blockedTagsTabVerticalBoxList.add(buildingIconViewHorizontalBox);
+        blockedTagsTabVerticalBoxList.add(createGlue());
+        blockedTagsTabVerticalBoxList.add(createGlue());
+        blockedTagsTabVerticalBoxList.add(createGlue());
+        blockedTagsTabVerticalBoxList.add(buildingMessageLabelHorizontalBox);
+
+        return this.blockedTagsTabVerticalBox;
+    }
+
+    /***
+     * Creates a pending friends tab vertical box.
+     *
+     * @param classLoader A ClassLoader instance.
+     * @return The created vertical box.
+     */
+
+    private VBox createPendingFriendsTab(ClassLoader classLoader) {
+        // Create standing icon view
+        InputStream standingIconStream = classLoader.getResourceAsStream("img/standing_icon.png");
+        Image standingIconImage = new Image(standingIconStream);
+        ImageView standingIconView = new ImageView(standingIconImage);
+        standingIconView.setFitWidth(160);
+        standingIconView.setFitHeight(300);
+
+        // Create standing message label
+        Label standingMessageLabel = new Label("There are no pending friend requests. Here's Steve for now.");
+        standingMessageLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+
+        // Create standing icon view horizontal box
+        HBox standingIconViewHorizontalBox = new HBox(10);
+        ObservableList standingIconViewHorizontalBoxList = standingIconViewHorizontalBox.getChildren();
+
+        for (int i = 0; i < 43; i++)
+            standingIconViewHorizontalBoxList.add(createGlue());
+
+        standingIconViewHorizontalBoxList.add(standingIconView);
+
+        // Create standing message label horizontal box
+        HBox standingMessageLabelHorizontalBox = new HBox(10);
+        ObservableList standingMessageLabelHorizontalBoxList = standingMessageLabelHorizontalBox.getChildren();
+
+        for (int i = 0; i < 33; i++)
+            standingMessageLabelHorizontalBoxList.add(createGlue());
+
+        standingMessageLabelHorizontalBoxList.add(standingMessageLabel);
+
+        // Create pending friends tab vertical box
+        ObservableList pendingFriendsTabVerticalBoxList = this.pendingFriendsTabVerticalBox.getChildren();
+
+        for (int i = 0; i < 16; i++)
+            pendingFriendsTabVerticalBoxList.add(createGlue());
+
+        pendingFriendsTabVerticalBoxList.add(standingIconViewHorizontalBox);
+        pendingFriendsTabVerticalBoxList.add(createGlue());
+        pendingFriendsTabVerticalBoxList.add(createGlue());
+        pendingFriendsTabVerticalBoxList.add(createGlue());
+        pendingFriendsTabVerticalBoxList.add(standingMessageLabelHorizontalBox);
+
+        return this.pendingFriendsTabVerticalBox;
     }
 
     /***
@@ -653,6 +759,12 @@ public class GraphicalUserInterfaceHelper extends Application {
         // Create all friends tab vertical box
         VBox allFriendsTabVerticalBox = createAllFriendsTab(lonelyIconImage, secondFriendsVerticalBoxList);
 
+        // Create pending friends tab vertical box
+        VBox pendingFriendsTabVerticalBox = createPendingFriendsTab(classLoader);
+
+        // Create blocked tags tab vertical box
+        VBox blockedTagsTabVerticalBox = createBlockedTagsTab(classLoader);
+
         // Create first horizontal box
         HBox firstHorizontalBox = new HBox(10);
         ObservableList firstHorizontalBoxList = firstHorizontalBox.getChildren();
@@ -689,6 +801,8 @@ public class GraphicalUserInterfaceHelper extends Application {
             public void handle(ActionEvent e) {
                 if (secondFriendsVerticalBoxList.size() > 1)
                     secondFriendsVerticalBoxList.remove(1);
+
+                secondFriendsVerticalBoxList.add(pendingFriendsTabVerticalBox);
             }
         });
 
@@ -698,6 +812,8 @@ public class GraphicalUserInterfaceHelper extends Application {
             public void handle(ActionEvent e) {
                 if (secondFriendsVerticalBoxList.size() > 1)
                     secondFriendsVerticalBoxList.remove(1);
+
+                secondFriendsVerticalBoxList.add(blockedTagsTabVerticalBox);
             }
         });
 
