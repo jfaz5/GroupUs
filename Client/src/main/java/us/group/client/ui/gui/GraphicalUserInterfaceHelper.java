@@ -500,6 +500,112 @@ public class GraphicalUserInterfaceHelper extends Application {
         return this.addFriendTabVerticalBox;
     }
 
+    /**
+     * Creates a settings tab vertical box.
+     *
+     * @return The created vertical box.
+     */
+
+    private VBox createSettingsTab() {
+        // Create my account label
+        Label myAccountLabel = new Label("My Account");
+        myAccountLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 30.0));
+
+        // Create username label
+        Label usernameLabel = new Label("Username");
+        usernameLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+
+        // Create username text field
+        TextField usernameTextField = new TextField();
+        usernameTextField.setMinWidth(225);
+        usernameTextField.setMinHeight(40);
+        usernameTextField.setMaxWidth(225);
+        usernameTextField.setMaxHeight(40);
+
+        // Create current password label
+        Label currentPasswordLabel = new Label("Current Password");
+        currentPasswordLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+
+        // Create current password text field
+        TextField currentPasswordTextField = new TextField();
+        currentPasswordTextField.setMinWidth(225);
+        currentPasswordTextField.setMinHeight(40);
+        currentPasswordTextField.setMaxWidth(225);
+        currentPasswordTextField.setMaxHeight(40);
+
+        // Create horizontal line separator
+        Separator horizontalLineSeparator = new Separator(Orientation.HORIZONTAL);
+
+        // Create inner vertical box
+        VBox innerVerticalBox = new VBox(10);
+        ObservableList innerVerticalBoxList = innerVerticalBox.getChildren();
+
+        for (int i = 0; i < 10; i++)
+            innerVerticalBoxList.add(createGlue());
+
+        innerVerticalBoxList.add(usernameLabel);
+        innerVerticalBoxList.add(usernameTextField);
+        innerVerticalBoxList.add(createGlue());
+        innerVerticalBoxList.add(createGlue());
+        innerVerticalBoxList.add(currentPasswordLabel);
+        innerVerticalBoxList.add(currentPasswordTextField);
+
+        for (int i = 0; i < 10; i++)
+            innerVerticalBoxList.add(createGlue());
+
+        // Create inner horizontal box
+        HBox innerHorizontalBox = new HBox(10);
+        ObservableList innerHorizontalBoxList = innerHorizontalBox.getChildren();
+
+        for (int i = 0; i < 20; i++)
+            innerHorizontalBoxList.add(createGlue());
+
+        innerHorizontalBoxList.add(innerVerticalBox);
+
+        for (int i = 0; i < 20; i++)
+            innerHorizontalBoxList.add(createGlue());
+
+        // Create second inner vertical box
+        VBox secondInnerVerticalBox = new VBox(10);
+        secondInnerVerticalBox.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
+        ObservableList secondInnerVerticalBoxList = secondInnerVerticalBox.getChildren();
+        secondInnerVerticalBoxList.add(innerHorizontalBox);
+        secondInnerVerticalBoxList.add(horizontalLineSeparator);
+
+        // Create outer vertical box
+        VBox outerVerticalBox = new VBox(10);
+        ObservableList outerVerticalBoxList = outerVerticalBox.getChildren();
+
+        for (int i = 0; i < 20; i++)
+            outerVerticalBoxList.add(createGlue());
+
+        outerVerticalBoxList.add(myAccountLabel);
+
+        for (int i = 0; i < 2; i++)
+            outerVerticalBoxList.add(createGlue());
+
+        outerVerticalBoxList.add(secondInnerVerticalBox);
+
+        for (int i = 0; i < 10; i++)
+            outerVerticalBoxList.add(createGlue());
+
+        // Create outer horizontal box
+        HBox outerHorizontalBox = new HBox(10);
+        ObservableList outerHorizontalBoxList = outerHorizontalBox.getChildren();
+
+        for (int i = 0; i < 25; i++)
+            outerHorizontalBoxList.add(createGlue());
+
+        outerHorizontalBoxList.add(outerVerticalBox);
+
+        // Create settings tab vertical box
+        VBox settingsTabVerticalBox = new VBox(10);
+        ObservableList settingsTabVerticalBoxList = settingsTabVerticalBox.getChildren();
+        settingsTabVerticalBoxList.add(outerHorizontalBox);
+
+        return settingsTabVerticalBox;
+    }
+
     @Override
     public void start(Stage primaryStage) {
         // Line separators
@@ -765,6 +871,15 @@ public class GraphicalUserInterfaceHelper extends Application {
         // Create blocked tags tab vertical box
         VBox blockedTagsTabVerticalBox = createBlockedTagsTab(classLoader);
 
+        // Create settings tab vertical box
+        VBox settingsTabVerticalBox = createSettingsTab();
+
+        // Create padded settings tab vertical box
+        VBox paddedSettingsTabVerticalBox = new VBox(10);
+        ObservableList paddedSettingsTabVerticalBoxList = paddedSettingsTabVerticalBox.getChildren();
+        paddedSettingsTabVerticalBoxList.add(createGlue());
+        paddedSettingsTabVerticalBoxList.add(settingsTabVerticalBox);
+
         // Create first horizontal box
         HBox firstHorizontalBox = new HBox(10);
         ObservableList firstHorizontalBoxList = firstHorizontalBox.getChildren();
@@ -781,6 +896,11 @@ public class GraphicalUserInterfaceHelper extends Application {
                     secondFriendsVerticalBoxList.remove(1);
 
                 secondFriendsVerticalBoxList.add(onlineFriendsTabVerticalBox);
+
+                if (firstHorizontalBoxList.size() > 3)
+                    firstHorizontalBoxList.remove(3);
+
+                firstHorizontalBoxList.add(secondFriendsVerticalBox);
             }
         });
 
@@ -792,6 +912,11 @@ public class GraphicalUserInterfaceHelper extends Application {
                     secondFriendsVerticalBoxList.remove(1);
 
                 secondFriendsVerticalBoxList.add(allFriendsTabVerticalBox);
+
+                if (firstHorizontalBoxList.size() > 3)
+                    firstHorizontalBoxList.remove(3);
+
+                firstHorizontalBoxList.add(secondFriendsVerticalBox);
             }
         });
 
@@ -803,6 +928,11 @@ public class GraphicalUserInterfaceHelper extends Application {
                     secondFriendsVerticalBoxList.remove(1);
 
                 secondFriendsVerticalBoxList.add(pendingFriendsTabVerticalBox);
+
+                if (firstHorizontalBoxList.size() > 3)
+                    firstHorizontalBoxList.remove(3);
+
+                firstHorizontalBoxList.add(secondFriendsVerticalBox);
             }
         });
 
@@ -814,6 +944,11 @@ public class GraphicalUserInterfaceHelper extends Application {
                     secondFriendsVerticalBoxList.remove(1);
 
                 secondFriendsVerticalBoxList.add(blockedTagsTabVerticalBox);
+
+                if (firstHorizontalBoxList.size() > 3)
+                    firstHorizontalBoxList.remove(3);
+
+                firstHorizontalBoxList.add(secondFriendsVerticalBox);
             }
         });
 
@@ -825,6 +960,38 @@ public class GraphicalUserInterfaceHelper extends Application {
                     secondFriendsVerticalBoxList.remove(1);
 
                 secondFriendsVerticalBoxList.add(addFriendTabVerticalBox);
+
+                if (firstHorizontalBoxList.size() > 3)
+                    firstHorizontalBoxList.remove(3);
+
+                firstHorizontalBoxList.add(secondFriendsVerticalBox);
+            }
+        });
+
+        // Define callback method for settings button onclick event
+        settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (firstHorizontalBoxList.size() > 3)
+                    firstHorizontalBoxList.remove(3);
+
+                firstHorizontalBoxList.add(paddedSettingsTabVerticalBox);
+            }
+        });
+
+        // Define callback method for friends button onclick event
+        friendsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                if (secondFriendsVerticalBoxList.size() > 1)
+                    secondFriendsVerticalBoxList.remove(1);
+
+                secondFriendsVerticalBoxList.add(addFriendTabVerticalBox);
+
+                if (firstHorizontalBoxList.size() > 3)
+                    firstHorizontalBoxList.remove(3);
+
+                firstHorizontalBoxList.add(secondFriendsVerticalBox);
             }
         });
 
