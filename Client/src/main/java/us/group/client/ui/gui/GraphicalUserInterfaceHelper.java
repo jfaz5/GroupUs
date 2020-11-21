@@ -28,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.application.Application;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Background;
+import javafx.scene.control.Hyperlink;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BackgroundImage;
@@ -515,16 +516,39 @@ public class GraphicalUserInterfaceHelper extends Application {
         Label usernameLabel = new Label("Username");
         usernameLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
 
+        // Create username required asterisk label
+        Label usernameRequiredAsteriskLabel = new Label("*");
+        usernameRequiredAsteriskLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+        usernameRequiredAsteriskLabel.setStyle("-fx-text-fill: red;");
+
+        // Create username label horizontal box
+        HBox usernameLabelHorizontalBox = new HBox(5);
+        ObservableList usernameLabelHorizontalBoxList = usernameLabelHorizontalBox.getChildren();
+        usernameLabelHorizontalBoxList.add(usernameLabel);
+        usernameLabelHorizontalBoxList.add(usernameRequiredAsteriskLabel);
+
         // Create username text field
         TextField usernameTextField = new TextField();
         usernameTextField.setMinWidth(225);
         usernameTextField.setMinHeight(40);
         usernameTextField.setMaxWidth(225);
         usernameTextField.setMaxHeight(40);
+        usernameTextField.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 15.0));
 
         // Create current password label
         Label currentPasswordLabel = new Label("Current Password");
         currentPasswordLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+
+        // Create current password required asterisk label
+        Label currentPasswordRequiredAsteriskLabel = new Label("*");
+        currentPasswordRequiredAsteriskLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+        currentPasswordRequiredAsteriskLabel.setStyle("-fx-text-fill: red;");
+
+        // Create current password label horizontal box
+        HBox currentPasswordLabelHorizontalBox = new HBox(5);
+        ObservableList currentPasswordLabelHorizontalBoxList = currentPasswordLabelHorizontalBox.getChildren();
+        currentPasswordLabelHorizontalBoxList.add(currentPasswordLabel);
+        currentPasswordLabelHorizontalBoxList.add(currentPasswordRequiredAsteriskLabel);
 
         // Create current password text field
         TextField currentPasswordTextField = new TextField();
@@ -532,9 +556,110 @@ public class GraphicalUserInterfaceHelper extends Application {
         currentPasswordTextField.setMinHeight(40);
         currentPasswordTextField.setMaxWidth(225);
         currentPasswordTextField.setMaxHeight(40);
+        currentPasswordTextField.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 15.0));
+
+        // Create change password hyperlink
+        Hyperlink changePasswordHyperlink = new Hyperlink("Change Password?");
+        changePasswordHyperlink.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 15.0));
+        changePasswordHyperlink.setStyle("-fx-border-color: transparent; -fx-text-fill: black;");
+
+        // Create new password label
+        Label newPasswordLabel = new Label("New Password");
+        newPasswordLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+
+        // Create new password required asterisk label
+        Label newPasswordRequiredAsteriskLabel = new Label("*");
+        newPasswordRequiredAsteriskLabel.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+        newPasswordRequiredAsteriskLabel.setStyle("-fx-text-fill: red;");
+
+        // Create new password label horizontal box
+        HBox newPasswordLabelHorizontalBox = new HBox(5);
+        ObservableList newPasswordLabelHorizontalBoxList = newPasswordLabelHorizontalBox.getChildren();
+        newPasswordLabelHorizontalBoxList.add(newPasswordLabel);
+        newPasswordLabelHorizontalBoxList.add(newPasswordRequiredAsteriskLabel);
+
+        // Create new password text field
+        TextField newPasswordTextField = new TextField();
+        newPasswordTextField.setMinWidth(225);
+        newPasswordTextField.setMinHeight(40);
+        newPasswordTextField.setMaxWidth(225);
+        newPasswordTextField.setMaxHeight(40);
+        newPasswordTextField.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 15.0));
 
         // Create horizontal line separator
         Separator horizontalLineSeparator = new Separator(Orientation.HORIZONTAL);
+        int lineWidth = getWindowWidth() - 700;
+        horizontalLineSeparator.setStyle("-fx-width: " + lineWidth + "px; -fx-min-width: " + lineWidth + "px;");
+
+        // Create horizontal line separator horizontal box
+        HBox horizontalLineSeparatorHorizontalBox = new HBox(10);
+        ObservableList horizontalLineSeparatorHorizontalBoxList = horizontalLineSeparatorHorizontalBox.getChildren();
+        horizontalLineSeparatorHorizontalBoxList.add(createGlue());
+        horizontalLineSeparatorHorizontalBoxList.add(createGlue());
+        horizontalLineSeparatorHorizontalBoxList.add(horizontalLineSeparator);
+        horizontalLineSeparatorHorizontalBoxList.add(createGlue());
+        horizontalLineSeparatorHorizontalBoxList.add(createGlue());
+
+        // Object for loading resources
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        // Create user account picture image view
+        InputStream defaultUserAccountPictureIconStream = classLoader.getResourceAsStream("img/default_user_account_picture_icon.png");
+        Image defaultUserAccountPictureIconImage = new Image(defaultUserAccountPictureIconStream);
+        ImageView userAccountPictureImageView = new ImageView(defaultUserAccountPictureIconImage);
+        userAccountPictureImageView.setFitWidth(150);
+        userAccountPictureImageView.setFitHeight(150);
+
+        // Create remove hyperlink
+        Hyperlink removeHyperlink = new Hyperlink("Remove");
+        removeHyperlink.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 15.0));
+        removeHyperlink.setStyle("-fx-border-color: transparent; -fx-text-fill: black;");
+        removeHyperlink.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                userAccountPictureImageView.setImage(defaultUserAccountPictureIconImage);
+            }
+        });
+
+        // Create remove hyperlink horizontal box
+        HBox removeHyperlinkHorizontalBox = new HBox(10);
+        ObservableList removeHyperlinkHorizontalBoxList = removeHyperlinkHorizontalBox.getChildren();
+
+        for (int i = 0; i < 4; i++)
+            removeHyperlinkHorizontalBoxList.add(createGlue());
+
+        removeHyperlinkHorizontalBoxList.add(removeHyperlink);
+
+        // Create user account picture image view and remove hyperlink padding vertical box
+        VBox userAccountPictureImageViewAndRemoveHyperlinkPaddingVerticalBox = new VBox(10);
+        ObservableList userAccountPictureImageViewAndRemoveHyperlinkPaddingVerticalBoxList = userAccountPictureImageViewAndRemoveHyperlinkPaddingVerticalBox.getChildren();
+
+        for (int i = 0; i < 10; i++)
+            userAccountPictureImageViewAndRemoveHyperlinkPaddingVerticalBoxList.add(createGlue());
+
+        // Create user account picture image view and remove hyperlink vertical box
+        VBox userAccountPictureImageViewAndRemoveHyperlinkVerticalBox = new VBox();
+        ObservableList userAccountPictureImageViewAndRemoveHyperlinkVerticalBoxList = userAccountPictureImageViewAndRemoveHyperlinkVerticalBox.getChildren();
+        userAccountPictureImageViewAndRemoveHyperlinkVerticalBoxList.add(userAccountPictureImageViewAndRemoveHyperlinkPaddingVerticalBox);
+        userAccountPictureImageViewAndRemoveHyperlinkVerticalBoxList.add(userAccountPictureImageView);
+        userAccountPictureImageViewAndRemoveHyperlinkVerticalBoxList.add(removeHyperlinkHorizontalBox);
+
+        // Create bottom inner vertical box
+        VBox bottomInnerVerticalBox = new VBox(10);
+        ObservableList bottomInnerVerticalBoxList = bottomInnerVerticalBox.getChildren();
+        bottomInnerVerticalBoxList.add(createGlue());
+        bottomInnerVerticalBoxList.add(changePasswordHyperlink);
+
+        // Define callback method for change password hyperlink onclick event
+        changePasswordHyperlink.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                bottomInnerVerticalBoxList.clear();
+                bottomInnerVerticalBoxList.add(createGlue());
+                bottomInnerVerticalBoxList.add(newPasswordLabelHorizontalBox);
+                bottomInnerVerticalBoxList.add(newPasswordTextField);
+            }
+        });
 
         // Create inner vertical box
         VBox innerVerticalBox = new VBox(10);
@@ -543,21 +668,37 @@ public class GraphicalUserInterfaceHelper extends Application {
         for (int i = 0; i < 10; i++)
             innerVerticalBoxList.add(createGlue());
 
-        innerVerticalBoxList.add(usernameLabel);
+        innerVerticalBoxList.add(usernameLabelHorizontalBox);
         innerVerticalBoxList.add(usernameTextField);
         innerVerticalBoxList.add(createGlue());
         innerVerticalBoxList.add(createGlue());
-        innerVerticalBoxList.add(currentPasswordLabel);
+        innerVerticalBoxList.add(currentPasswordLabelHorizontalBox);
         innerVerticalBoxList.add(currentPasswordTextField);
+        innerVerticalBoxList.add(createGlue());
+        innerVerticalBoxList.add(bottomInnerVerticalBox);
+
+        for (int i = 0; i < 6; i++)
+            innerVerticalBoxList.add(createGlue());
+
+        // Create inner vertical box padding
+        VBox innerVerticalBoxPadding = new VBox();
+        ObservableList innerVerticalBoxPaddingList = innerVerticalBoxPadding.getChildren();
 
         for (int i = 0; i < 10; i++)
-            innerVerticalBoxList.add(createGlue());
+            innerVerticalBoxPaddingList.add(createGlue());
+
+        innerVerticalBoxList.add(innerVerticalBoxPadding);
 
         // Create inner horizontal box
         HBox innerHorizontalBox = new HBox(10);
         ObservableList innerHorizontalBoxList = innerHorizontalBox.getChildren();
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 17; i++)
+            innerHorizontalBoxList.add(createGlue());
+
+        innerHorizontalBoxList.add(userAccountPictureImageViewAndRemoveHyperlinkVerticalBox);
+
+        for (int i = 0; i < 2; i++)
             innerHorizontalBoxList.add(createGlue());
 
         innerHorizontalBoxList.add(innerVerticalBox);
@@ -565,18 +706,59 @@ public class GraphicalUserInterfaceHelper extends Application {
         for (int i = 0; i < 20; i++)
             innerHorizontalBoxList.add(createGlue());
 
+        // Create delete account button
+        Button deleteAccountButton = new Button("Delete Account");
+        deleteAccountButton.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+        deleteAccountButton.setStyle("-fx-text-fill: red; -fx-border-color: red; -fx-border-width: 2px; -fx-background-color: transparent;");
+
+        // Create cancel button
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+        cancelButton.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-background-color: transparent;");
+        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                bottomInnerVerticalBoxList.clear();
+                bottomInnerVerticalBoxList.add(createGlue());
+                bottomInnerVerticalBoxList.add(changePasswordHyperlink);
+            }
+        });
+
+        // Create save button
+        Button saveButton = new Button("Save");
+        saveButton.setFont(Font.font(Font.getDefault().getName(), FontWeight.BOLD, 16.0));
+        saveButton.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-background-color: lightgreen;");
+
+        // Create below horizontal line horizontal box
+        HBox belowHorizontalLineHorizontalBox = new HBox(10);
+        ObservableList belowHorizontalLineHorizontalBoxList = belowHorizontalLineHorizontalBox.getChildren();
+        belowHorizontalLineHorizontalBoxList.add(createGlue());
+        belowHorizontalLineHorizontalBoxList.add(createGlue());
+        belowHorizontalLineHorizontalBoxList.add(deleteAccountButton);
+
+        for (int i = 0; i < 45; i++)
+            belowHorizontalLineHorizontalBoxList.add(createGlue());
+
+        belowHorizontalLineHorizontalBoxList.add(cancelButton);
+        belowHorizontalLineHorizontalBoxList.add(createGlue());
+        belowHorizontalLineHorizontalBoxList.add(saveButton);
+
         // Create second inner vertical box
         VBox secondInnerVerticalBox = new VBox(10);
         secondInnerVerticalBox.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
         ObservableList secondInnerVerticalBoxList = secondInnerVerticalBox.getChildren();
         secondInnerVerticalBoxList.add(innerHorizontalBox);
-        secondInnerVerticalBoxList.add(horizontalLineSeparator);
+        secondInnerVerticalBoxList.add(horizontalLineSeparatorHorizontalBox);
+        secondInnerVerticalBoxList.add(createGlue());
+        secondInnerVerticalBoxList.add(belowHorizontalLineHorizontalBox);
+        secondInnerVerticalBoxList.add(createGlue());
+        secondInnerVerticalBoxList.add(createGlue());
 
         // Create outer vertical box
         VBox outerVerticalBox = new VBox(10);
         ObservableList outerVerticalBoxList = outerVerticalBox.getChildren();
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10; i++)
             outerVerticalBoxList.add(createGlue());
 
         outerVerticalBoxList.add(myAccountLabel);
@@ -593,7 +775,7 @@ public class GraphicalUserInterfaceHelper extends Application {
         HBox outerHorizontalBox = new HBox(10);
         ObservableList outerHorizontalBoxList = outerHorizontalBox.getChildren();
 
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < 17; i++)
             outerHorizontalBoxList.add(createGlue());
 
         outerHorizontalBoxList.add(outerVerticalBox);

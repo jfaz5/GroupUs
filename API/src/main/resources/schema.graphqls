@@ -1,0 +1,14 @@
+type Query {
+    avatarByName(name: String): String
+}
+
+type Mutation {
+    createTag(tag: Tag): Boolean
+}
+
+input Tag {
+    name: String
+    password: String
+    avatar: String
+}
+
